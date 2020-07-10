@@ -1,15 +1,15 @@
 from datetime import datetime
+from hashlib import md5
 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from hashlib import md5
 
 from app import db, login
 
 followers = db.Table('followers',
                      db.Column('follower_id', db.Integer,
                                db.ForeignKey('user.id')),
-                     db.Column('follower_id', db.Integer,
+                     db.Column('followed_id', db.Integer,
                                db.ForeignKey('user.id')))
 
 
@@ -24,7 +24,7 @@ class User(UserMixin, db.Model):
     followed = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic'
     )
 
@@ -40,6 +40,24 @@ class User(UserMixin, db.Model):
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
+    def followed_posts(self):
+        return Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id).order_by(
+                Post.timestamp.desc())
 
 
 @login.user_loader
