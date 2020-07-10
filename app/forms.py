@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
     TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, \
     Length
+
 from app.models import User
 
 
@@ -48,3 +49,5 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please choose a different username.')
 
 
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
