@@ -141,3 +141,5 @@ flaskenv/
 .idea
 app.db
 logs/
+babel.cfg
+messages.pot
