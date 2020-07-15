@@ -9,24 +9,6 @@
     </div>
 </div>
 <br>
-<!--<form action="" method="POST" novalidate>-->
-<!--    {{ form.hidden_tag() }}-->
-<!--    <p>-->
-<!--        {{ form.username.label }} <br>-->
-<!--        {{ form.username(size=32) }}-->
-<!--        {% for error in form.username.errors %}-->
-<!--        <br><span style="color: red;">[{{error}}]</span>-->
-<!--        {% endfor %}-->
-<!--    </p>-->
-<!--    <p>-->
-<!--        {{ form.password.label }} <br>-->
-<!--        {{ form.password(size=32) }}-->
-<!--        {% for error in form.password.errors %}-->
-<!--        <br><span style="color: red;">[{{error}}]</span>-->
-<!--        {% endfor %}-->
-<!--    </p>-->
-<!--    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>-->
-<!--    <p>{{ form.submit() }}</p>-->
 <p>
     {{ _('New User?') }}
     <a href="{{ url_for('auth.register')}}">
@@ -39,5 +21,4 @@
         {{ _('Click to Reset It') }}
     </a>
 </p>
-<!--</form>-->
 {% endblock %}
